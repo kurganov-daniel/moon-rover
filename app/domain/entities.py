@@ -7,6 +7,7 @@ DIR_VECTORS = ((0, 1), (1, 0), (0, -1), (-1, 0))
 
 class Direction(IntEnum):
     """Robot direction using mathematical convention"""
+
     NORTH = 0
     EAST = 1
     SOUTH = 2
@@ -16,6 +17,7 @@ class Direction(IntEnum):
 @dataclass(frozen=True)
 class Point:
     """Point on the lunar surface"""
+
     x: int
     y: int
 

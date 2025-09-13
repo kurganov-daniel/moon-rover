@@ -3,6 +3,7 @@ from app.domain.entities import Point
 
 class MissionException(Exception):
     """Base exception for mission-related errors"""
+
     pass
 
 

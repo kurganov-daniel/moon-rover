@@ -1,7 +1,7 @@
 """Domain services for robot command processing"""
 
-from app.domain.exceptions import LandingObstacleException
 from app.domain.entities import Command, CommandResult, Obstacle, Position
+from app.domain.exceptions import LandingObstacleException
 
 
 def execute_commands(
