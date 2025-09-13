@@ -1,14 +1,18 @@
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.application.command_service import CommandService
 from app.application.health_service import HealthStatusService
 from app.application.position_service import PositionService
 from app.infrastructure.db.engine import get_session
+from app.infrastructure.repositories.repo_command import RDBCommandRepository
 from app.infrastructure.repositories.repo_health import RDBHealthChecker
+from app.infrastructure.repositories.repo_obstacle import JSONObstacleRepository
 from app.infrastructure.repositories.repo_position import (
     RDBPositionRepository,
     StartPositionEnvSettings,
 )
+from app.infrastructure.repositories.unit_of_work import AsyncUoW
 
 position_settings = StartPositionEnvSettings()
 
@@ -27,3 +31,17 @@ def get_position_service(
     """Dependency for position service"""
     repo = RDBPositionRepository(session)
     return PositionService(repo, position_settings)
+
+
+def get_command_service(
+    session: AsyncSession = Depends(get_session),
+) -> CommandService:
+    """Dependency for command service"""
+    repo = RDBCommandRepository(session)
+    obstacle_repo = JSONObstacleRepository()
+    position_repo = RDBPositionRepository(session)
+    start_position_provider = StartPositionEnvSettings()
+    uow = AsyncUoW(session)
+    return CommandService(
+        repo, obstacle_repo, position_repo, start_position_provider, uow
+    )
