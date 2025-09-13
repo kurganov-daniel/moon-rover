@@ -7,12 +7,14 @@ from fastapi_structlog.middleware import StructlogMiddleware
 from prometheus_fastapi_instrumentator import Instrumentator
 
 from app.config import application_settings
+from app.infrastructure.db.engine import dispose_db_engine
 from app.logging import LOGGING
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     yield
+    await dispose_db_engine()
 
 
 logging.config.dictConfig(LOGGING)
