@@ -9,9 +9,12 @@ dependencies = [
     "asyncpg>=0.30.0",
     "fastapi>=0.116.1",
     "fastapi-cli>=0.0.11",
+    "fastapi-structlog>=0.7.0",
+    "prometheus-fastapi-instrumentator>=7.1.0",
     "pydantic>=2.11.9",
     "pydantic-settings>=2.10.1",
     "sqlalchemy>=2.0.43",
+    "structlog>=25.4.0",
     "uvicorn>=0.35.0",
 ]
 
