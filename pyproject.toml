@@ -13,6 +13,7 @@ dependencies = [
     "prometheus-fastapi-instrumentator>=7.1.0",
     "pydantic>=2.11.9",
     "pydantic-settings>=2.10.1",
+    "pytest-env>=1.1.5",
     "sqlalchemy>=2.0.43",
     "structlog>=25.4.0",
     "uvicorn>=0.35.0",
@@ -20,6 +21,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "httpx>=0.28.1",
     "pre-commit>=4.3.0",
     "pytest>=8.4.2",
     "pytest-asyncio>=1.2.0",
@@ -68,3 +70,12 @@ asyncio_mode = "auto"
 markers = [
     "asyncio: mark test to run with asyncio",
 ]
+env = [
+    "API_KEY=8AqBJfp91OavAcM",
+    "DATABASE_URL=postgresql+asyncpg://rover_operator:5GJJ6gxEHxEhAFFWxwAkbCd8+r6DxMUs5NjmMIQa9xs=@db:5432/moon_rover",
+    "START_X=4",
+    "START_Y=2",
+    "START_DIRECTION=WEST",
+    "OBSTACLES_JSON_PATH=./config/obstacles.json"
+]
+
