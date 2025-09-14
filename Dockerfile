@@ -8,13 +8,17 @@ COPY --from=ghcr.io/astral-sh/uv:0.8.15 /uv /uvx /usr/local/bin/
 
 # Set working directory
 WORKDIR /app
+COPY ./app /app
 
 # Copy dependency files
 COPY pyproject.toml uv.lock ./
 
 # Install dependencies
-RUN uv export --frozen --no-dev --format requirements-txt -o req.txt \
+RUN uv export --frozen --format requirements-txt -o req.txt \
  && uv pip install --system --require-hashes -r req.txt
 
-CMD ["python", "-m", "app.main"]
-
+COPY entrypoint.sh /usr/local/bin
+RUN chmod +x /usr/local/bin/entrypoint.sh
+EXPOSE ${APP_PORT}
+ENTRYPOINT ["entrypoint.sh"]
+CMD ["start"]
