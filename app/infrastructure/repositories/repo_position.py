@@ -1,5 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from sqlalchemy import desc, select
+from sqlalchemy import desc, insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domain.entities import Direction, Point, Position
@@ -29,11 +29,9 @@ class RDBPositionRepository:
         self.session = session
 
     async def get_current_position(self) -> Position | None:
-        """Fetch the latest position from DB (ordered by created_at desc)."""
+        """Fetch the latest position from DB (ordered by id desc)."""
         result = await self.session.execute(
-            select(PositionORM)
-            .order_by(desc(PositionORM.created_at), desc(PositionORM.id))
-            .limit(1)
+            select(PositionORM).order_by(desc(PositionORM.id)).limit(1)
         )
         position_orm: PositionORM | None = result.scalar_one_or_none()
 
@@ -44,3 +42,20 @@ class RDBPositionRepository:
             point=Point(position_orm.coord_x, position_orm.coord_y),
             direction=position_orm.direction,
         )
+
+    async def save_positions_bulk(
+        self, command_id: int, positions: list[Position]
+    ) -> None:
+        if not positions:
+            return
+
+        payload = [
+            {
+                'coord_x': p.x,
+                'coord_y': p.y,
+                'direction': p.direction,
+                'command_id': command_id,
+            }
+            for p in positions
+        ]
+        await self.session.execute(insert(PositionORM), payload)
