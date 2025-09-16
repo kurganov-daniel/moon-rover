@@ -7,6 +7,7 @@ from app.presentation.dependencies import (
     get_command_service,
     get_health_status_service,
     get_position_service,
+    verify_credentials,
 )
 from app.presentation.schemas import (
     CommandRequest,
@@ -28,6 +29,7 @@ async def health_check(health_service=Depends(get_health_status_service)):
 @router.get('/positions', response_model=PositionResponse)
 async def get_position(
     position_service=Depends(get_position_service),
+    _: str = Depends(verify_credentials),
 ):
     position = await position_service.get_current_position()
     return PositionResponse(
@@ -37,7 +39,9 @@ async def get_position(
 
 @router.post('/commands', response_model=CommandResponse)
 async def execute_commands(
-    request: CommandRequest, command_service=Depends(get_command_service)
+    request: CommandRequest,
+    command_service=Depends(get_command_service),
+    _: str = Depends(verify_credentials),
 ):
     try:
         logger.info('Executing command: %s', request.command)

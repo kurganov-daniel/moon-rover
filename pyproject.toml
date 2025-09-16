@@ -71,11 +71,16 @@ markers = [
     "asyncio: mark test to run with asyncio",
 ]
 env = [
-    "API_KEY=8AqBJfp91OavAcM",
+    "USERNAME=admin",
+    "PASSWORD=moon-rover-secret",
     "DATABASE_URL=postgresql+asyncpg://rover_operator:5GJJ6gxEHxEhAFFWxwAkbCd8+r6DxMUs5NjmMIQa9xs=@db:5432/moon_rover",
     "START_X=4",
     "START_Y=2",
     "START_DIRECTION=WEST",
     "OBSTACLES_JSON_PATH=./config/obstacles.json"
+]
+filterwarnings = [
+    "ignore::RuntimeWarning:asyncio",
+    "ignore::DeprecationWarning:pydantic",
 ]
 
