@@ -31,7 +31,14 @@ async def get_position(
     position_service=Depends(get_position_service),
     _: str = Depends(verify_credentials),
 ):
+    logger.info('Position request received')
     position = await position_service.get_current_position()
+    logger.info(
+        'Position retrieved: x=%d, y=%d, direction=%s',
+        position.x,
+        position.y,
+        position.direction.name,
+    )
     return PositionResponse(
         x=position.x, y=position.y, direction=position.direction.name
     )
