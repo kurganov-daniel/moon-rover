@@ -17,7 +17,7 @@ class PositionResponse(BaseModel):
 
 
 class CommandRequest(BaseModel):
-    command: str
+    command: str = Field(..., example="FRLBF")
 
     model_config = ConfigDict(extra='forbid')
 

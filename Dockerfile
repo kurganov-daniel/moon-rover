@@ -21,6 +21,7 @@ COPY ./config /config
 
 COPY entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/entrypoint.sh
+
 EXPOSE ${APP_PORT}
 ENTRYPOINT ["entrypoint.sh"]
 CMD ["start"]
