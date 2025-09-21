@@ -1,28 +1,5 @@
-import base64
 
 import pytest
-
-
-@pytest.fixture
-def auth_headers_valid(valid_username: str, valid_password: str) -> dict:
-    """HTTP headers with valid basic authorization"""
-
-    credentials = base64.b64encode(
-        f'{valid_username}:{valid_password}'.encode()
-    ).decode()
-
-    return {'Authorization': f'Basic {credentials}'}
-
-
-@pytest.fixture
-def auth_headers_invalid(invalid_username: str, invalid_password: str) -> dict:
-    """HTTP headers with invalid basic authorization"""
-
-    credentials = base64.b64encode(
-        f'{invalid_username}:{invalid_password}'.encode()
-    ).decode()
-
-    return {'Authorization': f'Basic {credentials}'}
 
 
 @pytest.fixture

@@ -1,5 +1,7 @@
 import os
 from urllib.parse import unquote, urlparse
+import base64
+
 
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
@@ -10,6 +12,10 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import NullPool
 from testcontainers.postgres import PostgresContainer
+
+from dotenv import load_dotenv
+
+load_dotenv(".env", override=False)
 
 
 @pytest.fixture(scope='session')
@@ -89,14 +95,11 @@ async def async_client(test_session):
 
 @pytest.fixture
 def valid_username() -> str:
-    """Valid username for tests"""
-    return 'admin'
-
+    return os.getenv("USERNAME", "admin")
 
 @pytest.fixture
 def valid_password() -> str:
-    """Valid password for tests"""
-    return 'moon-rover-secret'
+    return os.getenv("PASSWORD", "moon-rover-secret")
 
 
 @pytest.fixture
@@ -109,3 +112,25 @@ def invalid_username() -> str:
 def invalid_password() -> str:
     """Invalid password for tests"""
     return 'invalid-password'
+
+
+@pytest.fixture
+def auth_headers_valid(valid_username: str, valid_password: str) -> dict:
+    """HTTP headers with valid basic authorization"""
+
+    credentials = base64.b64encode(
+        f'{valid_username}:{valid_password}'.encode()
+    ).decode()
+
+    return {'Authorization': f'Basic {credentials}'}
+
+
+@pytest.fixture
+def auth_headers_invalid(invalid_username: str, invalid_password: str) -> dict:
+    """HTTP headers with invalid basic authorization"""
+
+    credentials = base64.b64encode(
+        f'{invalid_username}:{invalid_password}'.encode()
+    ).decode()
+
+    return {'Authorization': f'Basic {credentials}'}

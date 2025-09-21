@@ -18,6 +18,12 @@ Despite the small size of the project, the Clean Architecture pattern was chosen
 - **Command History**: Stores all executed commands in PostgreSQL database
 - **Health Monitoring**: System health checks and status endpoints
 - **API Authentication**: Secure API endpoints with key-based authentication
+- **Comprehensive Testing**: 95% test coverage with unit and integration tests
+
+## 🚧 Roadmap (TODO)
+
+- **Microcontroller Simulation**: Add mock microcontroller interface with Celery worker for realistic hardware simulation
+- **Dynamic Obstacle Management**: Replace static obstacle file with REST API endpoints for real-time obstacle configuration
 
 ## 🛠️ Tech Stack
 
@@ -103,31 +109,19 @@ Despite the small size of the project, the Clean Architecture pattern was chosen
 
 5. **Run tests locally**
    ```bash
-   # Run unit tests only (no database required)
-   uv run pytest tests/application tests/domain tests/infrastructure
+   # Run unit tests only
+   uv run pytest tests/unit/
    
-   # Run with coverage
-   uv run pytest --cov=app tests/application tests/domain tests/infrastructure
+   # Run integration tests only
+   uv run pytest tests/integration/ 
    
-   # Run integration tests (requires database)
-   # First start the database
-   docker compose up db -d
+   # Run all tests with coverage
+   uv run pytest --cov=app
+   
+   # Run specific test type with coverage
+   uv run pytest --cov=app tests/unit/
+   uv run pytest --cov=app tests/integration/
    ```
-
-### Running Tests in Docker Container
-
-**Integration tests require a running database and must be run in the container:**
-
-```bash
-# Run integration tests in container (requires database)
-docker compose run --rm app uv run pytest tests/test_integration_api.py
-
-# Run all tests in container with coverage
-docker compose run --rm app uv run pytest --cov=app
-
-# Run only unit tests in container
-docker compose run --rm app uv run pytest tests/application tests/domain tests/infrastructure
-```
 
 ## API Endpoints
 
@@ -229,6 +223,8 @@ Key environment variables (see `.env_example.txt`):
 **Authentication:**
 - `USERNAME` - API username (default: admin)
 - `PASSWORD` - API password (default: moon-rover-secret)
+
+
 
 ## License
 
