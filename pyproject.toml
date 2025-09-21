@@ -16,6 +16,7 @@ dependencies = [
     "pytest-env>=1.1.5",
     "sqlalchemy>=2.0.43",
     "structlog>=25.4.0",
+    "testcontainers>=4.13.0",
     "uvicorn>=0.35.0",
 ]
 
@@ -66,21 +67,18 @@ testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
+
 asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
+
 markers = [
     "asyncio: mark test to run with asyncio",
+    "integration: marks tests as integration"
 ]
-env = [
-    "USERNAME=admin",
-    "PASSWORD=moon-rover-secret",
-    "DATABASE_URL=postgresql+asyncpg://rover_operator:5GJJ6gxEHxEhAFFWxwAkbCd8+r6DxMUs5NjmMIQa9xs=@db:5432/moon_rover",
-    "START_X=4",
-    "START_Y=2",
-    "START_DIRECTION=WEST",
-    "OBSTACLES_JSON_PATH=./config/obstacles.json"
+
+filterwarnings =  [
+    'ignore:The @wait_container_is_ready decorator is deprecated:DeprecationWarning:testcontainers\..*'
 ]
-filterwarnings = [
-    "ignore::RuntimeWarning:asyncio",
-    "ignore::DeprecationWarning:pydantic",
-]
+    
 

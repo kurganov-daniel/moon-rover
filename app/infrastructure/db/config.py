@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -22,4 +24,6 @@ class PostgresSettings(BaseSettings):
         return self.ALCHEMY_ECHO == 'True'
 
 
-pg_settings = PostgresSettings()
+@lru_cache
+def get_pg_settings() -> PostgresSettings:
+    return PostgresSettings()

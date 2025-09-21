@@ -1,4 +1,4 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class AppSettings(BaseSettings):
@@ -13,10 +13,9 @@ class AppSettings(BaseSettings):
     api_description: str = 'API for controlling a moon rover robot'
     api_version: str = '1.0.0'
 
-    class Config:
-        env_file = '.env'
-        case_sensitive = False
-        extra = 'ignore'  # Ignore extra environment variables
+    model_config = SettingsConfigDict(
+        env_file='.env', case_sensitive=False, extra='ignore'
+    )
 
 
 application_settings = AppSettings()

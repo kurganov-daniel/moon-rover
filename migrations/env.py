@@ -3,7 +3,7 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
-from app.infrastructure.db.config import pg_settings
+from app.infrastructure.db.config import get_pg_settings
 from app.infrastructure.db.models import (  # pyright: ignore[reportMissingImports]
     Base,
 )
@@ -13,7 +13,8 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-database_url = pg_settings.get_database_url + '?async_fallback=true'
+database_url = get_pg_settings().get_database_url + '?async_fallback=true'
+
 config.set_main_option('sqlalchemy.url', database_url)
 
 target_metadata = Base.metadata
